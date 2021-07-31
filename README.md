@@ -1,6 +1,13 @@
 # NestJS Pager
 A simple Pagination implementation for NestJS applications and is built using NestJS' RepositoryAPI.
 
+## Table of Contents
+1. [Installation](https://github.com/z3ttee/nestjs-pager#installation)
+2. [Prerequisites](https://github.com/z3ttee/nestjs-pager#prerequisites)
+3. [Usage](https://github.com/z3ttee/nestjs-pager#usage)
+4. [How the URL is built](https://github.com/z3ttee/nestjs-pager#how-the-url-is-built)
+5. [Using default page settings](https://github.com/z3ttee/nestjs-pager#using-default-page-settings)
+
 ## Installation
 ```
 npm install nestjs-pager

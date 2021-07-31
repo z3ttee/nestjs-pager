@@ -1,6 +1,6 @@
 {
   "name": "nestjs-pager",
-  "version": "1.0.0",
+  "version": "1.0.2",
   "description": "A simple Pagination implementation for NestJS applications.",
   "main": "dist/index.js",
   "scripts": {
@@ -39,6 +39,11 @@
   ],
   "author": "z3ttee",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/z3ttee/nestjs-pager.git"
+  },
+  "homepage": "https://github.com/z3ttee/nestjs-pager",
   "files": [
     "dist/**/*"
   ]
