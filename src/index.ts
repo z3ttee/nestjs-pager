@@ -45,6 +45,8 @@ export const Pageable = createParamDecorator(
 export class PageableRepository<T> extends Repository<T> {
     public findAll(pageable: Pageable, options?: FindManyOptions<T>): Promise<Page<T>> {
         return new Promise((resolve) => {
+            if(!options) options = {};
+            
             options.skip = pageable.page * pageable.size;
             options.take = pageable.size;
 
