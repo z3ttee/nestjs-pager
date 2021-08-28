@@ -45,11 +45,10 @@ export const Pageable = createParamDecorator(
 export class PageableRepository<T> extends Repository<T> {
     public findAll(pageable: Pageable, options?: FindManyOptions<T>): Promise<Page<T>> {
         return new Promise((resolve) => {
-            this.findAndCount({
-                ...options,
-                skip: pageable.page * pageable.size,
-                take: pageable.size
-            }).then((result: [T[], number]) => {
+            options.skip = pageable.page * pageable.size;
+            options.take = pageable.size;
+
+            this.findAndCount(options).then((result: [T[], number]) => {
                 resolve(new Page<T>(result[1], pageable.page, pageable.size, result[0]));
             }).catch(() => {
                 resolve(new Page<T>(0, pageable.page, pageable.size, []));
