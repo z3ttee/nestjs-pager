@@ -1,6 +1,28 @@
 import { createParamDecorator, ExecutionContext } from "@nestjs/common";
 import { FindManyOptions, Repository } from "typeorm";
 
+export class Properties extends Array<string> {}
+export const Filter = createParamDecorator((type: { new(...args: any[]): any; }, ctx: ExecutionContext): Properties => {
+    const properties = new Properties()
+
+    // Rework, so that relations can be included. Maybe call it FilterOptions?
+
+    try {
+        const wildcard = Object.keys(new type())
+        const request = ctx.switchToHttp().getRequest();
+
+        if(request.query.filter) {
+            properties.push(...([ ...JSON.parse(request.query.filter) ] || []).filter((val) => wildcard.includes(val)))
+        } else {
+            properties.push(...wildcard)
+        }
+    } catch (err) {
+        console.error(err)
+    }
+
+    return properties;
+})
+
 export interface Pageable {
     size?: number;
     page?: number;
@@ -27,7 +49,7 @@ export class Page<T> {
 export const Pageable = createParamDecorator(
     (defaults: Pageable, ctx: ExecutionContext): Pageable => {        
         const request = ctx.switchToHttp().getRequest();
-        
+                
         let pageNr = parseInt(request.query.page) || defaults?.page || 0;
         let pageSize = parseInt(request.query.size) || defaults?.size || 50;
 
@@ -57,5 +79,4 @@ export class PageableRepository<T> extends Repository<T> {
             });
         })
     }
-
 }
