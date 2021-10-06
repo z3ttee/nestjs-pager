@@ -7,6 +7,7 @@ A simple Pagination implementation for NestJS applications and is built using Ne
 3. [Usage](https://github.com/z3ttee/nestjs-pager#usage)
 4. [How the URL is built](https://github.com/z3ttee/nestjs-pager#how-the-url-is-built)
 5. [Using default page settings](https://github.com/z3ttee/nestjs-pager#using-default-page-settings)
+6. [Filtering](https://github.com/z3ttee/nestjs-pager#filtering)
 
 ## Installation
 ```
@@ -91,3 +92,15 @@ export class SomeController {
 Now on every request the decorator will check if `page` or `size` exists and if not the default values will be set.
 (NOTE: Of course you may not want to set a default page, because this would always return that one page if no `page`-query parameter is defined.)<br>
 Using these default settings, we will always get page nr. 2 (if page = 0, we would get page nr. 1 returned (works like index of an array)) returned with 30 entries, but only if there's no `page` or `size` query parameter.
+
+## Filtering
+The purpose of filtering is to include or exclude specific fields of the response object that will be returned. For example using `@ExcludeFilter()` allows us to return all properties of an object, except of the ones specified in the url. <br> A controller method using this parameter decorator then supports the exclusion filter. To apply the filter you need to add a query parameter to your requested url like that:
+```
+For including properties:
+http://localhost:3000/your/route?select=["include", "these", "fields"]
+```
+If you want to explicitly include fields rather then excluding, you would have to use the `@Filter()` parameter decorator instead.
+Both decorators return a `string[]` array, which can then be used together with typeorm. Let's take a look at a complete example:
+// TODO
+<br>
+Also NOTE: Because of how typeorm is designed, including properties, that are internally handled as relationships causes errors. Under some circumstances it can break queries, because relationship fields aren't actual columns in databases. Please consider exluding or not including them.

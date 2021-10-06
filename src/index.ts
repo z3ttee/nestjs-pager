@@ -1,27 +1,10 @@
 import { createParamDecorator, ExecutionContext } from "@nestjs/common";
 import { FindManyOptions, Repository } from "typeorm";
 
-export class Properties extends Array<string> {}
-export const Filter = createParamDecorator((type: { new(...args: any[]): any; }, ctx: ExecutionContext): Properties => {
-    const properties = new Properties()
-
-    // Rework, so that relations can be included. Maybe call it FilterOptions?
-
-    try {
-        const wildcard = Object.keys(new type())
-        const request = ctx.switchToHttp().getRequest();
-
-        if(request.query.filter) {
-            properties.push(...([ ...JSON.parse(request.query.filter) ] || []).filter((val) => wildcard.includes(val)))
-        } else {
-            properties.push(...wildcard)
-        }
-    } catch (err) {
-        console.error(err)
-    }
-
-    return properties;
-})
+import { Filter } from "./filtering/filter";
+export {
+    Filter
+}
 
 export interface Pageable {
     size?: number;
