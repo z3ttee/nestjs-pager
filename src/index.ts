@@ -36,13 +36,17 @@ export class Page<T> {
     public activePageSize: number;
     public elements: T[];
 
-    constructor(totalElements: number, activePage: number, activePageSize: number, elements: T[]) {
+    constructor(totalElements: number, activePage: number, elements: T[]) {
         this.totalElements = totalElements;
-        this.totalPages = Math.ceil(totalElements / activePageSize);
+        this.activePageSize = elements.length;
+        this.totalPages = Math.ceil((totalElements || 0) / (this.activePageSize || 1));
         this.elements = elements;
         this.amount = elements.length;
         this.activePage = activePage;
-        this.activePageSize = activePageSize;
+    }
+
+    public static of<Type>(elements: Type[], totalElements?: number, activePage?: number): Page<Type> {
+        return new Page<Type>(totalElements || elements.length, activePage || 0, elements);
     }
 }
 
@@ -73,9 +77,9 @@ export class PageableRepository<T> extends Repository<T> {
             options.take = pageable.size;
 
             this.findAndCount(options).then((result: [T[], number]) => {
-                resolve(new Page<T>(result[1], pageable.page, pageable.size, result[0]));
+                resolve(new Page<T>(result[1] || 0, pageable.page, result[0]));
             }).catch(() => {
-                resolve(new Page<T>(0, pageable.page, pageable.size, []));
+                resolve(new Page<T>(0, pageable.page, []));
             });
         })
     }
