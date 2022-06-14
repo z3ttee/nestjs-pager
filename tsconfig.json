@@ -1,14 +1,16 @@
 {
     "compilerOptions": {
-        "target": "esnext",
-        "module": "commonjs",
+        "target": "ESNext",
+        "module": "CommonJS",
         "declaration": true,
-        "outDir": "./dist",
+        "outDir": "./dist/cjs",
         "strict": true,
         "noImplicitAny": false,
         "strictNullChecks": false,
         "esModuleInterop": true,
-        "experimentalDecorators": true
+        "experimentalDecorators": true,
+        "declarationDir": "dist/types",
+        "moduleResolution": "node"
     },
     "include": ["src"],
     "exclude": ["node_modules", "**/__tests__/*"]
